@@ -1,0 +1,77 @@
+syntax = "v1"
+
+info(
+	title: "mall"
+	desc: "go-zero 学习项目"
+	author: "YangSen"
+	email: "1575986506@qq.com"
+	version: 1.0
+)
+
+@server(
+	prefix: api
+)
+
+service user-api{
+	@handler SignupHandler
+	post /user/signup(SignupRequest) returns(SignupResponse)
+	
+	@handler LoginHandler
+	post /user/login(LoginRequest) returns(LoginResponse)
+}
+
+@server(
+	prefix: api
+	jwt: Auth // 添加jwt鉴权
+	middleware: Cost // 添加自定义中间件 (路由中间件)
+)
+service user-api{
+	@handler DetailHandler
+	get /user/detail(DetailRequest) returns(DetailResponse)
+}
+
+// 定义类型
+type SignupRequest {
+	Username   string `json:"username"`
+	Password   string `json:"password"`
+	RePassword string `json:"re_password"`
+	Gender     int    `json:"gender,options=0|1|2,default=0"`
+}
+
+type SignupResponse {
+	Message string `json:"message"`
+}
+
+type LoginRequest {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type LoginResponse {
+	Message      string `json:"message"`
+	AccessToken  string `json:"accessToken"`
+	AccessExpire int    `json:"accessExpire"`
+	RefreshAfter int    `json:"refreshAfter"`
+}
+
+// 用户详情接口  传一个UserID 返回用户的基本信息(用户名，性别)
+// 用户详情接口 需要登录以后才能访问 需要认证auth
+
+// 1. 用户成功登录之后
+// 1.1 生成JSON Web Token(JWT)
+// 1.2 返回给前端 前端会把token保存起来，后续每一次请求都会带上token
+
+// 2. 后端需要鉴权的接口就会对请求进行鉴权，从请求中取到token
+// 2.1 解析成功就是登录用户
+// 2.2 解析失败就是未登录的用户或token失效的用户
+// 3.refresh token (可选)
+
+type DetailRequest {
+	UserID int64 `form:"user_id"`
+}
+
+type DetailResponse {
+	Username string `json:"username"`
+	Gender   int    `json:"gender"`
+	Message  string `json:"message"`
+}

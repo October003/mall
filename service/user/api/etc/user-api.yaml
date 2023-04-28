@@ -1,0 +1,22 @@
+Name: user-api
+Host: 0.0.0.0
+Port: 8888
+
+Mysql:
+  DataSource: root:103003@tcp(127.0.0.1:3306)/gorm?parseTime=true
+
+CacheRedis:
+  - Host: 127.0.0.1:6379
+  
+
+Log: 
+  ServiceName: "user-srv"
+  Mode: file #console
+  Encoding: json
+  Path: logs
+  Level: debug #info
+  Stat: true
+
+Auth:
+  AccessSecret: October003
+  AccessExpire: 60

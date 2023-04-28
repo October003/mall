@@ -1,0 +1,7 @@
+go 1.19
+
+// 所有 go.mod 文件的相对路径
+use ( 
+    ../mall
+    ./service/user/api
+)
