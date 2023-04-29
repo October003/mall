@@ -71,6 +71,12 @@ CacheRedis:
 
 order服务的search接口中添加拦截器，添加一些userID、requestID、token等数据
 
+几个关键点:
+1. 什么时候存入metadata
+2. 怎么存
+3. 拦截器中如何获取要存入的值
+4. context 存值取值操作
+
 #### go-zero 项目中添加server端拦截器
 
 
